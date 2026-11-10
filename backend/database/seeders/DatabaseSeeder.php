@@ -15,14 +15,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $admin = config('rentalapp.admin');
+
         User::updateOrCreate(
-            ['email' => 'admin@rentalapp.test'],
+            ['email' => $admin['email']],
             [
-                'name' => 'Administrateur',
+                'name' => $admin['name'],
                 'phone' => '+221770000001',
-                'password' => Hash::make('password'),
+                'password' => Hash::make($admin['password']),
                 'role' => UserRole::Admin,
                 'status' => UserStatus::Active,
+                'email_verified_at' => now(),
             ],
         );
 
