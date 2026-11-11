@@ -5,7 +5,8 @@ use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
-    Route::post('auth/login', [AuthController::class, 'login']);
+    Route::post('auth/register', [AuthController::class, 'register'])->middleware('throttle:6,1');
+    Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:6,1');
 
     Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('auth/me', [AuthController::class, 'me']);

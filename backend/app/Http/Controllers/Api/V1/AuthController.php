@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
@@ -25,6 +26,18 @@ class AuthController extends Controller
                 'token' => $token,
             ],
         ]);
+    }
+
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        ['user' => $user, 'token' => $token] = $this->authService->register($request->validated());
+
+        return response()->json([
+            'data' => [
+                'user' => new UserResource($user),
+                'token' => $token,
+            ],
+        ], 201);
     }
 
     public function me(Request $request): UserResource
