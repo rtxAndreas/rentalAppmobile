@@ -22,7 +22,7 @@ class UserService
         $perPage = (int) ($filters['per_page'] ?? 15);
 
         return User::query()
-            ->when($actor->isManager(), fn (Builder $query) => $query->where('role', UserRole::Client))
+            ->when($actor->isManager(), fn (Builder $query) => $query->where('role', UserRole::Client->value))
             ->when($filters['search'] ?? null, function (Builder $query, string $search): void {
                 $query->where(function (Builder $query) use ($search): void {
                     $query->where('name', 'like', "%{$search}%")
