@@ -1,11 +1,14 @@
 import { NativeTabs } from 'expo-router/native-tabs';
 import { useColorScheme } from 'react-native';
 
+import { useAuth } from '@/auth/AuthContext';
 import { Colors } from '@/constants/theme';
 
 export default function AppTabs() {
   const scheme = useColorScheme();
   const colors = Colors[scheme === 'dark' ? 'dark' : 'light'];
+  const { user } = useAuth();
+  const canManageUsers = user?.role === 'admin' || user?.role === 'manager';
 
   return (
     <NativeTabs
@@ -27,6 +30,16 @@ export default function AppTabs() {
           renderingMode="template"
         />
       </NativeTabs.Trigger>
+
+      {canManageUsers ? (
+        <NativeTabs.Trigger name="users">
+          <NativeTabs.Trigger.Label>Utilisateurs</NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Icon
+            src={require('@/assets/images/tabIcons/explore.png')}
+            renderingMode="template"
+          />
+        </NativeTabs.Trigger>
+      ) : null}
 
       <NativeTabs.Trigger name="account">
         <NativeTabs.Trigger.Label>Compte</NativeTabs.Trigger.Label>

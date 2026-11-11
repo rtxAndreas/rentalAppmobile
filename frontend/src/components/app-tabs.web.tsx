@@ -9,6 +9,7 @@ import {
 import { SymbolView } from 'expo-symbols';
 import { Pressable, useColorScheme, View, StyleSheet, type PressableProps } from 'react-native';
 
+import { useAuth } from '@/auth/AuthContext';
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 
 import { ExternalLink } from './external-link';
@@ -16,6 +17,9 @@ import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 
 export default function AppTabs() {
+  const { user } = useAuth();
+  const canManageUsers = user?.role === 'admin' || user?.role === 'manager';
+
   return (
     <Tabs>
       <TabSlot style={{ height: '100%' }} />
@@ -27,6 +31,11 @@ export default function AppTabs() {
           <TabTrigger name="explore" href="/explore" asChild>
             <TabButton>Explore</TabButton>
           </TabTrigger>
+          {canManageUsers ? (
+            <TabTrigger name="users" href="/users" asChild>
+              <TabButton>Utilisateurs</TabButton>
+            </TabTrigger>
+          ) : null}
           <TabTrigger name="account" href="/account" asChild>
             <TabButton>Compte</TabButton>
           </TabTrigger>
